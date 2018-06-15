@@ -1,4 +1,6 @@
-                        # MD_data_analysis
+# MD Data Analysis Tool
+
+# One Example Run
 			_|      _|  _|_|_|
 			_|_|  _|_|  _|    _|
 			_|  _|  _|  _|    _|
@@ -11,7 +13,7 @@
 Processing ◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉ 100%
  System information:
 
-        System trajectory file name:		nvt-efield.lammpstrj
+        System trajectory file name:	nvt-efield.lammpstrj
         Number of atoms in the box:		6102
         Total number of Frames: 		30001
         First Frame Box size information: 	42.850510 42.850510 42.850510
