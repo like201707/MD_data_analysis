@@ -32,7 +32,7 @@ class Ionic_Conductivity(object):
 		else:
 			self.d = 2
 		# box size did not change for all frames 
-		self.bz = traj.boxSize[0][d]
+		self.bz = traj.boxSize[0][self.d]
 		
 	def method1(self):
 		
