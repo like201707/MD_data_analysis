@@ -16,9 +16,9 @@ def get_parser():
 	parser.add_argument('input1', type=str, nargs='?',help='XYZ trajectory of system, or Lammps trajectory of system')
 	parser.add_argument('input2', type=str, nargs='?',help='XYZ trajectory of system.(it is optional, take it only necessary) ')
 	parser.add_argument('-t','--task', default='XYZreader', type=str, help='type of task: XYZReader, diffusion, ionpair, ionic, wXYZ (default: XYZReader)')
-	parser.add_argument('-dt','--dtmax', default=1000, type=int, help='set maximum delta t (default: 1000)')
-	parser.add_argument('-c','--cutoff', default=4., type=float, help='set the cutoff value (default: 4.)')
-	parser.add_argument('-tp','--types', default='13', type=str, help='set which types need to output as XYZ file (default: "13")')
+	parser.add_argument('-dt','--dtmax', default=1000, type=int, help='set maximum delta t for task diffusion (default: 1000)')
+	parser.add_argument('-c','--cutoff', default=4., type=float, help='set the cutoff value for task ionpair (default: 4.)')
+	parser.add_argument('-tp','--types', default='13', type=str, help='set which types need to output as XYZ file for task wXYZ (default: "13")')
 
 	return parser
 	
