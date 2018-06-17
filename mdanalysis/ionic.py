@@ -51,7 +51,7 @@ class Ionic_Conductivity(object):
 						counter -= 1
 				
 			tmp += counter
-			count_ions[t] = tmp
+			count_ions[t] = tmp * self.q
 			
 			bar.next()
 		bar.finish()
@@ -88,7 +88,7 @@ class Ionic_Conductivity(object):
 		# print conductivity		
 		c = 6.242 * 10 ** 18
 		k = popt
-		I = self.q * k / (c * 10 ** -12)
+		I = k / (c * 10 ** -12)
 		J = I / (self.bz * 10 ** -10) ** 2
 		sigma = J / self.E
 		print( '           ' + self.fprefix + ' ion conductivity is %f'%sigma)
