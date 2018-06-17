@@ -23,6 +23,6 @@ setup(
 		'progress',
 		'scipy',
 		'matplotlib',
-		'yaml',
+		'pyyaml',
 	],
 )
