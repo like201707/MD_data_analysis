@@ -91,7 +91,36 @@ class Ionic_Conductivity(object):
 		I = k / (c * 10 ** -12)
 		J = I / (self.bz * 10 ** -10) ** 2
 		sigma = J / self.E
-		print( '           ' + self.fprefix + ' ion conductivity is %f'%sigma)
+		print( '           ' + self.fprefix + ' ion conductivity is %f'%sigma + " S/m")
+		
+		# calculate total conductivity if possible
+		try:
+			cation = "Na" + self.fprefix[-3:] + "_ionic.dat"
+			anion = "S" + self.fprefix[-3:] + "_ionic.dat"
+			print("Trying to calculate total conductivity if have data")
+			X = np.loadtxt(cation)[:,0]
+			Y = np.loadtxt(cation)[:,1] + np.loadtxt(anion)[:,1]
+			Y1 = np.loadtxt(cation)[:,1]
+			Y2 = np.loadtxt(anion)[:,1]
+			popt, pcov = curve_fit(self.func, X, Y)
+			fig = pl.figure()
+			pl.plot(X, Y,'b', label="total")
+			pl.plot(X, Y1,'r', label="Na")
+			pl.plot(X, Y2,'y', label="triflate")
+			
+			pl.plot(X, self.func(X, *popt),'g-', label='fit: k=%5.3f' % tuple(popt))
+			pl.xlabel('time(ps)')
+			pl.ylabel('Number of ion cross the plane')
+			pl.legend()
+			fig.savefig('conductivity' + self.fprefix[-3:], dpi=fig.dpi)
+			k = popt
+			I = k / (c * 10 ** -12)
+			J = I / (self.bz * 10 ** -10) ** 2
+			sigma = J / self.E
+			print( '           ' + 'Total ion conductivity is %f'%sigma + " S/m")
+			
+		except IOError:
+			print("No data provided")
 		
 		
 		
