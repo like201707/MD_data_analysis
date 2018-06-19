@@ -98,10 +98,11 @@ class Ionic_Conductivity(object):
 			cation = "Na" + self.fprefix[-3:] + "_ionic.dat"
 			anion = "S" + self.fprefix[-3:] + "_ionic.dat"
 			print("Trying to calculate total conductivity if have data")
-			X = np.loadtxt(cation)[:,0]
-			Y = np.loadtxt(cation)[:,1] + np.loadtxt(anion)[:,1]
-			Y1 = np.loadtxt(cation)[:,1]
-			Y2 = np.loadtxt(anion)[:,1]
+			X = np.loadtxt(cation)[:,0][0 : self.tf-self.ti]
+			Y = ((np.loadtxt(cation)[:,1] + np.loadtxt(anion)[:,1])[self.ti:self.tf] -
+				 (np.loadtxt(cation)[:,1] + np.loadtxt(anion)[:,1])[self.ti])
+			Y1 = np.loadtxt(cation)[:,1][self.ti : self.tf] - np.loadtxt(cation)[:,1][self.ti]
+			Y2 = np.loadtxt(anion)[:,1][self.ti : self.tf] - np.loadtxt(anion)[:,1][self.ti]
 			popt, pcov = curve_fit(self.func, X, Y)
 			fig = pl.figure()
 			pl.plot(X, Y,'b', label="total")
