@@ -13,14 +13,13 @@ class Ionic_Conductivity(object):
 		
 		with open(inputfile, 'r') as f:
 			self.input = yaml.load(f)	
-			
 		self.E = float(self.input['efield'])
 		self.ti = self.input['t_start']
 		self.tf = self.input['t_end']		
 		self.traj = traj
 		self.coords = traj.atomC
 		self.time = traj.nFrames
-		self.n_atomes = traj.nAtoms
+		self.n_atoms = traj.nAtoms
 		self.q = self.input['charge']
 		base = os.path.basename(traj.filename)
 		self.fprefix = os.path.splitext(base)[0]
@@ -49,7 +48,7 @@ class Ionic_Conductivity(object):
 		for t in range(1, self.time):
 			counter = 0
 			# in this condition, atoms can not move more than 1/4 box size in one step
-			for n in range(self.n_atomes):
+			for n in range(self.n_atoms):
 				if self.coords[t-1][n][self.d] < self.bz/2. and self.coords[t-1][n][self.d] >= (self.bz*3/8.):
 					if self.coords[t][n][self.d] > self.bz/2. and self.coords[t][n][self.d] <= (self.bz*5/8.):
 						counter += 1
@@ -77,10 +76,10 @@ class Ionic_Conductivity(object):
 		for t in range(self.time-delta_t):
 			tmp = 0.
 			for n in range(self.n_atoms):
-				if L/4. <= self.coords[t][n][2] <= 3*L/4.:
+				if self.bz/4. <= self.coords[t][n][2] <= 3*self.bz/4.:
 					
 					tmp += self.coords[t+delta_t][n][2] - self.coords[t][n][2] 
-			tmp2 += 1 / (delta_t*L/2.) * tmp
+			tmp2 += 1 / (delta_t*self.bz/2.) * tmp
 
 			I[t] = tmp2
 			
