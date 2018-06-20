@@ -35,19 +35,26 @@ class Ionic_Conductivity(object):
 		self.bz = traj.boxSize[0][self.d]
 		
 	def method1(self):
-		
+		"""
+		Method1:
+		Intensity across a fixed plane. A simple method to
+		obtain the current intensity is based on counting 
+		the number of cations and anions crossing a plane 
+		perpendicular to the direction of the electric field. 
+		"""
 		count_ions = np.zeros((self.time, 1))
 		tmp = 0
 		
 		bar = FillingCirclesBar('Processing', max=self.time-1)
 		for t in range(1, self.time):
 			counter = 0
+			# in this condition, atoms can not move more than 1/4 box size in one step
 			for n in range(self.n_atomes):
-				if self.coords[t-1][n][self.d] < self.bz/2. and self.coords[t-1][n][self.d] >= (self.bz/2. - 5.):
-					if self.coords[t][n][self.d] > self.bz/2. and self.coords[t][n][self.d] <= (self.bz/2. + 5.):
+				if self.coords[t-1][n][self.d] < self.bz/2. and self.coords[t-1][n][self.d] >= (self.bz*3/8.):
+					if self.coords[t][n][self.d] > self.bz/2. and self.coords[t][n][self.d] <= (self.bz*5/8.):
 						counter += 1
-				if self.coords[t-1][n][self.d] > self.bz/2. and self.coords[t-1][n][self.d] <= (self.bz/2. + 5.):
-					if self.coords[t][n][self.d] < self.bz/2. and self.coords[t][n][self.d] >= (self.bz/2. - 5.):
+				if self.coords[t-1][n][self.d] > self.bz/2. and self.coords[t-1][n][self.d] <= (self.bz*5/8.):
+					if self.coords[t][n][self.d] < self.bz/2. and self.coords[t][n][self.d] >= (self.bz*3/8.):
 						counter -= 1
 				
 			tmp += counter
@@ -58,6 +65,28 @@ class Ionic_Conductivity(object):
 		
 		return count_ions
 		
+	def method2(self):
+		"""
+		Method2:
+		Total intensity. In this method, one takes into 
+		account the current flowing across all the system.
+		"""
+		delta_t = 1
+		tmp2 = 0
+		I = np.zeros((self.time-delta_t, 1))
+		for t in range(self.time-delta_t):
+			tmp = 0.
+			for n in range(self.n_atoms):
+				if L/4. <= self.coords[t][n][2] <= 3*L/4.:
+					
+					tmp += self.coords[t+delta_t][n][2] - self.coords[t][n][2] 
+			tmp2 += 1 / (delta_t*L/2.) * tmp
+
+			I[t] = tmp2
+			
+		return I
+		
+			
 	def func(self, x, k):
 		
 		return x * k 
@@ -91,13 +120,14 @@ class Ionic_Conductivity(object):
 		I = k / (c * 10 ** -12)
 		J = I / (self.bz * 10 ** -10) ** 2
 		sigma = J / self.E
-		print( '           ' + self.fprefix + ' ion conductivity is %f'%sigma + " S/m")
+		print('\nResults information:\n')
+		print( '        ' + self.fprefix + ' ion conductivity is %f'%sigma + " S/m")
 		
 		# calculate total conductivity if possible
 		try:
 			cation = "Na" + self.fprefix[-3:] + "_ionic.dat"
 			anion = "S" + self.fprefix[-3:] + "_ionic.dat"
-			print("Trying to calculate total conductivity if have data")
+			print("        Trying to calculate total conductivity")
 			X = np.loadtxt(cation)[:,0][0 : self.tf-self.ti]
 			Y = ((np.loadtxt(cation)[:,1] + np.loadtxt(anion)[:,1])[self.ti:self.tf] -
 				 (np.loadtxt(cation)[:,1] + np.loadtxt(anion)[:,1])[self.ti])
@@ -118,10 +148,10 @@ class Ionic_Conductivity(object):
 			I = k / (c * 10 ** -12)
 			J = I / (self.bz * 10 ** -10) ** 2
 			sigma = J / self.E
-			print( '           ' + 'Total ion conductivity is %f'%sigma + " S/m")
+			print( '        ' + 'Total ion conductivity is %f'%sigma + " S/m")
 			
 		except IOError:
-			print("No data provided")
+			print("        No data provided")
 		
 		
 		
