@@ -19,7 +19,7 @@ def output_welcome():
 	
 def output_system_info(filename, n_atoms, n_frames, boxSize):
 	"""print system information"""
-	print(' System information:\n')
+	print('\nSystem information:\n')
 	print('        System trajectory file name:	\t{:s}'.format(filename))
 	print('        Number of atoms in the box:	\t{:d}'.format(n_atoms))
 	print('        Total number of Frames: 	\t{:d}'.format(n_frames))
