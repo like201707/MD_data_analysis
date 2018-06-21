@@ -4,11 +4,11 @@
 
 ## install
 
-git clone https://github.com/like201707/MD_data_analysis
+$ git clone https://github.com/like201707/MD_data_analysis
 
-cd MD_data_analysis
+$ cd MD_data_analysis
 
-python setup.py install
+$ python setup.py install
 
 ## Running
 
