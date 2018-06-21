@@ -1,6 +1,8 @@
 # MD Data Analysis Tool
 
-# One Example Run
+<img width="630" alt="screen shot 2018-06-20 at 10 09 20 pm" src="https://user-images.githubusercontent.com/29931166/41695874-a9d3c352-74d6-11e8-9a7d-aa93f91e55e1.png">
+
+## One Example Run
 
 		_|      _|  _|_|_|
 		_|_|  _|_|  _|    _|
