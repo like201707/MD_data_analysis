@@ -15,6 +15,8 @@ class XYZReader(object):
 		self.nAtoms = self.n_atoms()
 		self.nFrames = self.n_frames()
 		self.boxSize = np.empty([self.nFrames, 3], dtype=np.float)
+		self.atom_names = np.chararray([self.nFrames, self.nAtoms, 1], 
+										itemsize=3, unicode=True)
 		self.atomC = np.empty([self.nFrames, self.nAtoms, 3], dtype=np.float)
 		self.atomV = np.empty([self.nFrames, self.nAtoms, 3], dtype=np.float)
 		self._read_all_frames()
@@ -66,9 +68,10 @@ class XYZReader(object):
 		try:
 			self.boxSize[frame] = np.array(list(map(float, box)), dtype=np.float)
 		except ValueError:
-			pass
+			print("No Box size value povided")
 		for i in range(self.nAtoms):
 			lineInfo = f.readline().split()
+			self.atom_names[frame][i] = line[0]
 			# atom rx ry rz vx vy vz
 			self.atomC[frame][i] = np.array(lineInfo[1:4], dtype=np.float)
 			try:
