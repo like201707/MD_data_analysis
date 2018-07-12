@@ -71,7 +71,7 @@ class XYZReader(object):
 			print("No Box size value povided")
 		for i in range(self.nAtoms):
 			lineInfo = f.readline().split()
-			self.atom_names[frame][i] = line[0]
+			self.atom_names[frame][i] = lineInfo[0]
 			# atom rx ry rz vx vy vz
 			self.atomC[frame][i] = np.array(lineInfo[1:4], dtype=np.float)
 			try:
